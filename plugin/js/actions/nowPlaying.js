@@ -25,4 +25,42 @@ class NowPlayingAction extends Action {
     }
     
   };
+
+  onKeyDown = async (coordinates, state) => {
+    await this.replay();
+
+    // await this.changePlaylist(true);
+  };
+
+  replay = async () => {
+    foobarPlayerState = await foobar.getPlayerState();
+
+    const { activeItem: { playlistId, playlistIndex, index } } = foobarPlayerState;
+
+    if (playlistIndex > -1 && index > -1) {
+      foobar.playById(playlistIndex, index, (success, message) => {
+        if (!success) {
+          websocketUtils.showAlert(this.context);
+          websocketUtils.log(
+            "Error to replay, check if foobar is running!"
+          );
+        }
+      });
+    }
+  };
+
+  changePlaylist = async (isNext) => {
+    const diff = isNext ? 1 : -1;
+    const playlists = await foobar.getPlaylists();
+    const currentPlaylistindex = playlists.findIndex(playlist => playlist.isCurrent);
+    const nextPlaylist = playlists[(currentPlaylistindex + playlists.length + diff) % playlists.length];
+    foobar.playById(nextPlaylist.index, (nextPlaylist.itemCount * Math.random() << 0), (success, message) => {
+      if (!success) {
+        websocketUtils.showAlert(this.context);
+        websocketUtils.log(
+          "Error to change playlist, check if foobar is running!"
+        );
+      }
+    });
+  };
 }

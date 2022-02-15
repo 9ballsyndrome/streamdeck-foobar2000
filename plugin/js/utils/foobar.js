@@ -129,4 +129,23 @@ const foobar = {
     })
     return data;
   },
+  playById: async (playlistId, index, callback) => {
+    try {
+      const response = await axios.post(
+        `${foobar.baseUrl}/player/play/${playlistId}/${index}`,
+        {
+          timeout: 500,
+        }
+      );
+      callback(response.status >= 200, response.data);
+    } catch (e) {
+      callback(false, e);
+    }
+  },
+  getPlaylists: async () => {
+    const response = await axios.get(
+      `${foobar.baseUrl}/playlists`
+    );
+    return response.data.playlists;
+  },
 };
