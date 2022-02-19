@@ -148,4 +148,12 @@ const foobar = {
     );
     return response.data.playlists;
   },
+  changePlaylist: async (isNext, isRandom, callback) => {
+    const diff = isNext ? 1 : -1;
+    const playlists = await foobar.getPlaylists();
+    const currentPlaylistindex = playlists.findIndex(playlist => playlist.isCurrent);
+    const nextPlaylist = playlists[(currentPlaylistindex + playlists.length + diff) % playlists.length];
+    const index = isRandom ? nextPlaylist.itemCount * Math.random() << 0 : 0;
+    foobar.playById(nextPlaylist.index, index, callback);
+  }
 };

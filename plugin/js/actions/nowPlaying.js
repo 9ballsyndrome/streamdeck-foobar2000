@@ -50,11 +50,7 @@ class NowPlayingAction extends Action {
   };
 
   changePlaylist = async (isNext) => {
-    const diff = isNext ? 1 : -1;
-    const playlists = await foobar.getPlaylists();
-    const currentPlaylistindex = playlists.findIndex(playlist => playlist.isCurrent);
-    const nextPlaylist = playlists[(currentPlaylistindex + playlists.length + diff) % playlists.length];
-    foobar.playById(nextPlaylist.index, (nextPlaylist.itemCount * Math.random() << 0), (success, message) => {
+    foobar.changePlaylist(isNext, true, (success, message) => {
       if (!success) {
         websocketUtils.showAlert(this.context);
         websocketUtils.log(
