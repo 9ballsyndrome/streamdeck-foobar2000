@@ -15,7 +15,11 @@ class SkipBackwardAction extends Action {
   };
 
   onKeyUp = (coordinates, state) => {
-    if(performance.now() - this.timestamp > 1000){
+    if(!this.settings.longPress){
+      this.timestamp = 0;
+      return;
+    }
+    if(performance.now() - this.timestamp > (this.settings.longPressSeconds || 0.5) * 1000){
       foobar.changePlaylist(false, true, (success, message) => {
         if (!success) {
           websocketUtils.showAlert(this.context);
