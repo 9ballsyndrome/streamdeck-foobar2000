@@ -3,6 +3,7 @@
   <head>
     <title>com.davidborzek.foobar2000.pi</title>
     <link rel="stylesheet" type="text/css" href="styles/pi.css" />
+    <link rel="stylesheet" type="text/css" href="styles/sdpi.css" />
 
     <script src="../plugin/js/utils/websocket.js"></script>
     <script src="js/main.js"></script>
@@ -15,6 +16,33 @@
         <span>step:</span>
       </div>
       <input type="number" min="1" max="100" />
+    </div>
+
+    <div class="sdpi-item" id="select-action">
+      <div class="sdpi-item-label">Action</div>
+      <select class="sdpi-item-value select">
+        <option value="None">None</option>
+        <option value="Replay">Replay</option>
+        <option value="Skip seconds">Skip seconds</option>
+        <option value="Change playlist forward">Change playlist forward</option>
+        <option value="Change playlist backward">Change playlist backward</option>
+      </select>
+    </div>
+    <div class="sdpi-item" id="skip-seconds">
+      <div class="sdpi-item-label">Skip seconds</div>
+      <input type="number" min="-100" max="100" />
+    </div>
+
+    <div type="checkbox" class="sdpi-item" id="long-press">
+      <div class="sdpi-item-label">Long press change list</div>
+      <div class="sdpi-item-value">
+          <input id="longPress" type="checkbox">
+          <label for="longPress" class="sdpi-item-label"><span></span></label>
+      </div>
+      <div class="sdpi-item">
+        <div class="sdpi-item-label">Seconds</div>
+        <input type="number" min="0.1" max="3.0" />
+      </div>
     </div>
 
     <div class="pi-prop" id="general-info">

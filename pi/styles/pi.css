@@ -15,7 +15,10 @@ body {
   color: #9a9a9a;
 }
 
-#volume-step {
+#volume-step,
+#select-action,
+#skip-seconds,
+#long-press {
   display: none;
 }
 
