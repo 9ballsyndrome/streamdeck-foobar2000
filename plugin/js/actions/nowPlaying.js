@@ -27,9 +27,22 @@ class NowPlayingAction extends Action {
   };
 
   onKeyDown = async (coordinates, state) => {
-    await this.replay();
+    const customAction = this.settings.customAction || customActions.none;
 
-    // await this.changePlaylist(true);
+    switch (customAction) {
+      case customActions.replay:
+        await this.replay();
+        break;
+      case customActions.skipSeconds:
+        await this.playRelative(this.settings.skipSeconds || -15);
+        break;
+      case customActions.changePlaylistForward:
+        await this.changePlaylist(true);
+        break;
+      case customActions.changePlaylistBackward:
+        await this.changePlaylist(false);
+        break;
+    }
   };
 
   replay = async () => {
@@ -59,4 +72,23 @@ class NowPlayingAction extends Action {
       }
     });
   };
+
+  playRelative = async (seconds) => {
+    foobar.playRelative(seconds, (success, message) => {
+      if (!success) {
+        websocketUtils.showAlert(this.context);
+        websocketUtils.log(
+          "Error to play relative, check if foobar is running!"
+        );
+      }
+    });
+  };
 }
+
+const customActions = Object.freeze({
+  none: "None",
+  replay: "Replay",
+  skipSeconds: "Skip seconds",
+  changePlaylistForward: "Change playlist forward",
+  changePlaylistBackward: "Change playlist backward",
+});

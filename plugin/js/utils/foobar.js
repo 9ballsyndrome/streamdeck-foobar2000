@@ -155,5 +155,18 @@ const foobar = {
     const nextPlaylist = playlists[(currentPlaylistindex + playlists.length + diff) % playlists.length];
     const index = isRandom ? nextPlaylist.itemCount * Math.random() << 0 : 0;
     foobar.playById(nextPlaylist.index, index, callback);
-  }
+  },
+  playRelative: async (relativePosition, callback) => {
+    try {
+      const response = await axios.post(
+        `${foobar.baseUrl}/player?relativePosition=${relativePosition}`,
+        {
+          timeout: 500,
+        }
+      );
+      callback(response.status >= 200, response.data);
+    } catch (e) {
+      callback(false, e);
+    }
+  },
 };
