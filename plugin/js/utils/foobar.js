@@ -116,13 +116,20 @@ const foobar = {
   getCurrentArtwork: async (playlistId, index) => {
     const data = await new Promise(resolve => {
       const canvas = document.createElement('canvas');
-      canvas.width = 144;
-      canvas.height = 144;
+      const size = 144;
+      canvas.width = size;
+      canvas.height = size;
       const ctx = canvas.getContext("2d");
-  
+
       const img = new Image();
       img.onload = function() {
-        ctx.drawImage(img, 0, 0, 144, 144);
+        const {width, height} = img;
+        const ratio = width > height ? size / width : size / height;
+        const dw = width * ratio;
+        const dh = height * ratio;
+        const dx = (size - dw) * 0.5;
+        const dy = (size - dh) * 0.5;
+        ctx.drawImage(img, dx, dy, dw, dh);
         resolve(canvas.toDataURL());
       };
       img.onerror = function() {
